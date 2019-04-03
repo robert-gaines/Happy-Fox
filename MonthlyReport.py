@@ -44,7 +44,7 @@ def WriteToSpreadsheet(tickets):
                         #
                         ptr = str(indeces[i])+str(row_index)
                         #
-                        value = str(t[col_index])
+                        value = str(t[i])
                         #
                         monthly_sheet.write(ptr,value)
                         #
