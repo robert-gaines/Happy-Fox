@@ -111,22 +111,26 @@ def SortTickets(month,tickets):
                         #
         for i in range(0,len(temp_list)-1):
                 #
-                try:
+                if(type(temp_list[i][5]) is int):
                         #
-                        if((temp_list[i][5]) > (temp_list[i+1][5])):
+                        try:
                                 #
-                                temp = temp_list[i]
+                                if((temp_list[i][5]) > (temp_list[i+1][5])):
+                                        #
+                                        temp = temp_list[i]
+                                        #
+                                        temp_list[i] = temp_list[i+1]
+                                        #
+                                        temp_list[i+1] = temp
+                                        #
+                        except Exception as e:
                                 #
-                                temp_list[i] = temp_list[i+1]
+                                print("[!] Error: %s " % e)
                                 #
-                                temp_list[i+1] = temp
-                                #
-                except Exception as e:
+                else:
                         #
-                        print("[!] Error: %s " % e)
+                        pass
                         #
-        print(temp_list)
-        #
         return temp_list
 
 def GatherTickets():
