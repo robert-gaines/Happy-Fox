@@ -41,7 +41,7 @@ def WriteToSpreadsheet(tickets):
         #
         for t in tickets:
                 #
-                for i in range(0,len(indeces)-1):
+                for i in range(0,len(indeces)):
                         #
                         ptr = str(indeces[i])+str(row_index)
                         #
@@ -109,13 +109,25 @@ def SortTickets(month,tickets):
                         #
                         temp_list.append(t)
                         #
-        key_value = temp_list[0][5]
-        #
+        for i in range(0,len(temp_list)-1):
+                #
+                try:
+                        #
+                        if((temp_list[i][5]) > (temp_list[i+1][5])):
+                                #
+                                temp = temp_list[i]
+                                #
+                                temp_list[i] = temp_list[i+1]
+                                #
+                                temp_list[i+1] = temp
+                                #
+                except Exception as e:
+                        #
+                        print("[!] Error: %s " % e)
+                        #
         print(temp_list)
         #
-        sorted_list = sorted(temp_list,key=itemgetter(5))
-        #
-        return sorted_list
+        return temp_list
 
 def GatherTickets():
     #
