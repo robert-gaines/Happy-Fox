@@ -34,7 +34,7 @@ def WriteToSpreadsheet(tickets):
         monthly_sheet.write('O1','Root Cause',bold)
         monthly_sheet.write('P1','Remarks',bold)
         #
-        row_index = 1 ; col_index = 1
+        row_index = 2 ; col_index = 1
         #
         indeces = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P']
         #
