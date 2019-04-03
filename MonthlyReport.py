@@ -9,6 +9,16 @@ import json
 import time
 import sys
 
+def SortByUnit(tickets):
+        #
+        i = len(tickets) ; j = 0
+        #
+        sorted_list = []
+        #
+        sorted_list = tickets.sort(key=lambda x: x[4])
+        #
+        return sorted_list
+
 def WriteToSpreadsheet(tickets):
         #
         monthly_report = xlsxwriter.Workbook('MonthlyReport.xlsx')
@@ -88,7 +98,7 @@ def SortMenu():
 
 def SortTickets(month,tickets):
         #
-        sorted_list = []
+        sorted_list = [] ; temp_list = []
         #
         time_value = datetime.datetime.now().year
         #
@@ -105,8 +115,6 @@ def SortTickets(month,tickets):
                 month_index = int(date[5:7])
                 #
                 if((month == month_index) or (t[1] in ongoing) or ((statuses[3] in t[1]) and month_index<month)):
-                        #
-                        print(t)
                         #
                         sorted_list.append(t)
                         #
@@ -213,9 +221,55 @@ def GatherTickets():
 
 def main():
         #
+        print('''
+                 /$$      /$$                       /$$     /$$       /$$                                
+                | $$$    /$$$                      | $$    | $$      | $$                                
+                | $$$$  /$$$$  /$$$$$$  /$$$$$$$  /$$$$$$  | $$$$$$$ | $$ /$$   /$$                      
+                | $$ $$/$$ $$ /$$__  $$| $$__  $$|_  $$_/  | $$__  $$| $$| $$  | $$                      
+                | $$  $$$| $$| $$  \ $$| $$  \ $$  | $$    | $$  \ $$| $$| $$  | $$                      
+                | $$\  $ | $$| $$  | $$| $$  | $$  | $$ /$$| $$  | $$| $$| $$  | $$                      
+                | $$ \/  | $$|  $$$$$$/| $$  | $$  |  $$$$/| $$  | $$| $$|  $$$$$$$                      
+                |__/     |__/ \______/ |__/  |__/   \___/  |__/  |__/|__/ \____  $$                      
+                                                                        /$$  | $$                      
+                                                                        |  $$$$$$/                      
+                                                                        \______/                       
+                /$$$$$$$                                            /$$                                 
+                | $$__  $$                                          | $$                                 
+                | $$  \ $$  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$                               
+                | $$$$$$$/ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$|_  $$_/                               
+                | $$__  $$| $$$$$$$$| $$  \ $$| $$  \ $$| $$  \__/  | $$                                 
+                | $$  \ $$| $$_____/| $$  | $$| $$  | $$| $$        | $$ /$$                             
+                | $$  | $$|  $$$$$$$| $$$$$$$/|  $$$$$$/| $$        |  $$$$/                             
+                |__/  |__/ \_______/| $$____/  \______/ |__/         \___/                               
+                                | $$                                                                 
+                                | $$                                                                 
+                                |__/                                                                 
+                /$$$$$$                                                     /$$                        
+                /$$__  $$                                                   | $$                        
+                | $$  \__/  /$$$$$$  /$$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$  /$$$$$$    /$$$$$$   /$$$$$$ 
+                | $$ /$$$$ /$$__  $$| $$__  $$ /$$__  $$ /$$__  $$|____  $$|_  $$_/   /$$__  $$ /$$__  $$
+                | $$|_  $$| $$$$$$$$| $$  \ $$| $$$$$$$$| $$  \__/ /$$$$$$$  | $$    | $$  \ $$| $$  \__/
+                | $$  \ $$| $$_____/| $$  | $$| $$_____/| $$      /$$__  $$  | $$ /$$| $$  | $$| $$      
+                |  $$$$$$/|  $$$$$$$| $$  | $$|  $$$$$$$| $$     |  $$$$$$$  |  $$$$/|  $$$$$$/| $$      
+                \______/  \_______/|__/  |__/ \_______/|__/      \_______/   \___/   \______/ |__/      
+                                                                                                        
+                                                                                                        
+                                                                                                        
+                                                                                                        
+                                                                                                        
+                                                                                                        
+                /$$$$$$ /$$$$$$ /$$$$$$ /$$$$$$ /$$$$$$ /$$$$$$ /$$$$$$                                 
+                |______/|______/|______/|______/|______/|______/|______/                                 
+                                                            
+              ''')
+        #
+        time.sleep(3)
+        #
         tickets = []
         #
         sorted_tickets = []
+        #
+        sorted_by_unit = []
         #
         tickets = GatherTickets()
         #
@@ -223,7 +277,7 @@ def main():
         #
         sorted_tickets = SortTickets(month_index,tickets)
         #
-        WriteToSpreadsheet(tickets)
+        WriteToSpreadsheet(sorted_tickets)
 
 if(__name__ == '__main__'):
         #
