@@ -130,6 +130,24 @@ def SortMenu():
                 #
                 return month_selection
 
+def BubbleSort(tickets):
+        #
+        length = len(tickets)
+        #
+        for i in range(0,length):
+                #
+                for j in range(0,length-i-1):
+                        #
+                        if(tickets[j][5] > tickets[j+1][5]):
+                                #
+                                temp = tickets[j]
+                                #
+                                tickets[j] = tickets[j+1]
+                                #
+                                tickets[j+1] = temp
+                                #
+        return tickets
+
 def SortTickets(month,tickets):
         #
         sorted_list = [] ; temp_list = []
@@ -152,28 +170,9 @@ def SortTickets(month,tickets):
                         #
                         temp_list.append(t)
                         #
-                #
-                print(t)
-                #        
-        for i in range(0,len(temp_list)-1):
-                #
-                try:
-                        #
-                        if(int(temp_list[i][5]) > int(temp_list[i+1][5])):
-                                #
-                                print(temp_list[i][5],":",temp_list[i+1][5])
-                                #
-                                temp = temp_list[i]
-                                #
-                                temp_list[i] = temp_list[i+1]
-                                #
-                                temp_list[i+1] = temp
-                                #
-                except Exception as e:
-                        #
-                        print("[!] Error: %s " % e)
-                        #
-        return temp_list
+        sorted_list = BubbleSort(temp_list)
+        #
+        return sorted_list
 
 def GatherTickets():
     #
@@ -228,6 +227,14 @@ def GatherTickets():
                         notification = custom_field_zero['value']
                         subject = intake['subject']
                         repeat_cat_one = custom_field_five['value']
+                        #
+                        if(repeat_cat_one == 1):
+                                #
+                                repeat_cat_one = 'Yes'
+                                #
+                        else:
+                                repeat_cat_one = "No"
+                        #
                         corrective_action = custom_field_three['value']
                         asignee = intake['assigned_to']['name']
                         date_resolved = intake['last_updated_at'][0:10]
