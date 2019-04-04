@@ -9,16 +9,6 @@ import json
 import time
 import sys
 
-def SortByUnit(tickets):
-        #
-        i = len(tickets) ; j = 0
-        #
-        sorted_list = []
-        #
-        sorted_list = tickets.sort(key=lambda x: x[4])
-        #
-        return sorted_list
-
 def WriteToSpreadsheet(tickets):
         #
         monthly_report = xlsxwriter.Workbook('MonthlyReport.xlsx')
@@ -50,7 +40,7 @@ def WriteToSpreadsheet(tickets):
         #
         for t in tickets:
                 #
-                for i in range(0,len(indeces)-1):
+                for i in range(0,len(indeces)):
                         #
                         ptr = str(indeces[i])+str(row_index)
                         #
@@ -65,6 +55,50 @@ def WriteToSpreadsheet(tickets):
                 col_index = 1
                 #
         monthly_report.close()
+
+def IdentifyDevice(unit_value):
+        #
+        sites = {}
+        #
+        sites.update({"15 ASOS":1})
+        sites.update({"17 STS":1})
+        sites.update({"Quantadyn":2})
+        sites.update({"14 ASOS":3})
+        sites.update({"7 ASOS":4})
+        sites.update({"20 ASOS":5})
+        sites.update({"10 ASOS":6})
+        sites.update({"19 ASOS":7})
+        sites.update({"3 ASOS, Det 1":8})
+        sites.update({"25 ASOS":9})
+        sites.update({"15 ASOS":10})
+        sites.update({"WPC":11})
+        sites.update({"2 ASOS":12})
+        sites.update({"12 CTS":13})
+        sites.update({"20 ASOS, Det 1":14})
+        sites.update({"6 CTS":15})
+        sites.update({"6 CTS":16})
+        sites.update({"6 CTS":17})
+        sites.update({"5 ASOS":18})
+        sites.update({"23 STS":19})
+        sites.update({"STTS":20})
+        sites.update({"13 ASOS":21})
+        sites.update({"9 ASOS":22})
+        sites.update({"705th DMOC":23})
+        sites.update({"11 ASOS":24})
+        sites.update({"22 STS":25})
+        sites.update({"607 ASOG":26})
+        sites.update({"24 STS":27})
+        sites.update({"26 STS":28})
+        sites.update({"321 STS":29})
+        sites.update({"3 ASOS":30})
+        #
+        if(unit_value in sites):
+                #
+                return int(sites.get(unit_value))
+                #
+        else:
+                #
+                return 0
 
 def SortMenu():
         #
@@ -96,6 +130,24 @@ def SortMenu():
                 #
                 return month_selection
 
+def BubbleSort(tickets):
+        #
+        length = len(tickets)
+        #
+        for i in range(0,length):
+                #
+                for j in range(0,length-i-1):
+                        #
+                        if(tickets[j][5] > tickets[j+1][5]):
+                                #
+                                temp = tickets[j]
+                                #
+                                tickets[j] = tickets[j+1]
+                                #
+                                tickets[j+1] = temp
+                                #
+        return tickets
+
 def SortTickets(month,tickets):
         #
         sorted_list = [] ; temp_list = []
@@ -116,8 +168,10 @@ def SortTickets(month,tickets):
                 #
                 if((month == month_index) or (t[1] in ongoing) or ((statuses[3] in t[1]) and month_index<month)):
                         #
-                        sorted_list.append(t)
+                        temp_list.append(t)
                         #
+        sorted_list = BubbleSort(temp_list)
+        #
         return sorted_list
 
 def GatherTickets():
@@ -167,15 +221,24 @@ def GatherTickets():
                         discrepancy = intake['priority']['name']
                         submitter = intake['assigned_to']['name']
                         unit = intake['user']['custom_fields'][0]['value']
-                        device_id = custom_field_six['value']
+                        device_id = IdentifyDevice(unit) #custom_field_four['value']#
                         date_time_reported = intake['created_at']
                         date_time_acknowledged = intake['created_at']
                         notification = custom_field_zero['value']
                         subject = intake['subject']
                         repeat_cat_one = custom_field_five['value']
+                        #
+                        if(repeat_cat_one == 1):
+                                #
+                                repeat_cat_one = 'Yes'
+                                #
+                        else:
+                                repeat_cat_one = "No"
+                        #
                         corrective_action = custom_field_three['value']
                         asignee = intake['assigned_to']['name']
                         date_resolved = intake['last_updated_at'][0:10]
+                        #
                         try:
                                 #
                                 root_cause = custom_field_two['name']+" "+custom_field_two['value']
@@ -232,26 +295,26 @@ def main():
                 |__/     |__/ \______/ |__/  |__/   \___/  |__/  |__/|__/ \____  $$                      
                                                                         /$$  | $$                      
                                                                         |  $$$$$$/                      
-                                                                        \______/                       
-                /$$$$$$$                                            /$$                                 
+                                                                         \______/                       
+                 /$$$$$$$                                            /$$                                 
                 | $$__  $$                                          | $$                                 
                 | $$  \ $$  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$                               
                 | $$$$$$$/ /$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$|_  $$_/                               
                 | $$__  $$| $$$$$$$$| $$  \ $$| $$  \ $$| $$  \__/  | $$                                 
                 | $$  \ $$| $$_____/| $$  | $$| $$  | $$| $$        | $$ /$$                             
                 | $$  | $$|  $$$$$$$| $$$$$$$/|  $$$$$$/| $$        |  $$$$/                             
-                |__/  |__/ \_______/| $$____/  \______/ |__/         \___/                               
-                                | $$                                                                 
-                                | $$                                                                 
-                                |__/                                                                 
-                /$$$$$$                                                     /$$                        
+                |__/  |__/ \_______/| $$____/  \______/ |__/         \____/                               
+                                    | $$                                                                 
+                                    | $$                                                                 
+                                    |__/                                                                 
+                 /$$$$$$                                                     /$$                        
                 /$$__  $$                                                   | $$                        
                 | $$  \__/  /$$$$$$  /$$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$  /$$$$$$    /$$$$$$   /$$$$$$ 
                 | $$ /$$$$ /$$__  $$| $$__  $$ /$$__  $$ /$$__  $$|____  $$|_  $$_/   /$$__  $$ /$$__  $$
                 | $$|_  $$| $$$$$$$$| $$  \ $$| $$$$$$$$| $$  \__/ /$$$$$$$  | $$    | $$  \ $$| $$  \__/
                 | $$  \ $$| $$_____/| $$  | $$| $$_____/| $$      /$$__  $$  | $$ /$$| $$  | $$| $$      
                 |  $$$$$$/|  $$$$$$$| $$  | $$|  $$$$$$$| $$     |  $$$$$$$  |  $$$$/|  $$$$$$/| $$      
-                \______/  \_______/|__/  |__/ \_______/|__/      \_______/   \___/   \______/ |__/      
+                \_______/ \________/|__/  |__/ \_______/|__/      \_______/  \_____/  \______/ |__/      
                                                                                                         
                                                                                                         
                                                                                                         
@@ -269,8 +332,6 @@ def main():
         #
         sorted_tickets = []
         #
-        sorted_by_unit = []
-        #
         tickets = GatherTickets()
         #
         month_index = SortMenu()
@@ -278,6 +339,12 @@ def main():
         sorted_tickets = SortTickets(month_index,tickets)
         #
         WriteToSpreadsheet(sorted_tickets)
+        #
+        print()
+        #
+        print("[*] Finished, check directory for excel product")
+        #
+        time.sleep(3)
 
 if(__name__ == '__main__'):
         #
