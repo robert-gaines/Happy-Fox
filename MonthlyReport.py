@@ -11,30 +11,43 @@ import sys
 
 def WriteToSpreadsheet(tickets):
         #
+        month = datetime.datetime.now().month
+        #
+        year = datetime.datetime.now().year
+        #
+        report_string = "JTC-TRS Field Service Report"+str(month)+"-"+str(year)
+        #
         monthly_report = xlsxwriter.Workbook('MonthlyReport.xlsx')
         #
         monthly_sheet = monthly_report.add_worksheet()
         #
         bold = monthly_report.add_format({'bold': True})
         #
-        monthly_sheet.write('A1','Ticket ID',bold)
-        monthly_sheet.write('B1','Status',bold)
-        monthly_sheet.write('C1','Discrepancy',bold)
-        monthly_sheet.write('D1','Submitter',bold)
-        monthly_sheet.write('E1','Unit',bold)
-        monthly_sheet.write('F1','Device ID',bold)
-        monthly_sheet.write('G1','Date/Time Reported',bold)
-        monthly_sheet.write('H1','Date/Time Acknowledged',bold)
-        monthly_sheet.write('I1','Notification Mode',bold)
-        monthly_sheet.write('J1','Subject',bold)
-        monthly_sheet.write('K1','Repeat CAT 1',bold)
-        monthly_sheet.write('L1','Corrective Action',bold)
-        monthly_sheet.write('M1','Asignee',bold)
-        monthly_sheet.write('N1','Date Rsolved',bold)
-        monthly_sheet.write('O1','Root Cause',bold)
-        monthly_sheet.write('P1','Remarks',bold)
+        monthly_sheet.insert_image('A1','logo.PNG')
         #
-        row_index = 2 ; col_index = 1
+        monthly_sheet.write('B1',report_string,bold)
+        #
+        monthly_sheet.set_column('A:A',5)
+        monthly_sheet.set_column('B:B',10)
+        #
+        monthly_sheet.write('A2','Ticket ID',bold)
+        monthly_sheet.write('B2','Status',bold)
+        monthly_sheet.write('C2','Discrepancy',bold)
+        monthly_sheet.write('D2','Submitter',bold)
+        monthly_sheet.write('E2','Unit',bold)
+        monthly_sheet.write('F2','Device ID',bold)
+        monthly_sheet.write('G2','Date/Time Reported',bold)
+        monthly_sheet.write('H2','Date/Time Acknowledged',bold)
+        monthly_sheet.write('I2','Notification Mode',bold)
+        monthly_sheet.write('J2','Subject',bold)
+        monthly_sheet.write('K2','Repeat CAT 1',bold)
+        monthly_sheet.write('L2','Corrective Action',bold)
+        monthly_sheet.write('M2','Asignee',bold)
+        monthly_sheet.write('N2','Date Rsolved',bold)
+        monthly_sheet.write('O2','Root Cause',bold)
+        monthly_sheet.write('P2','Remarks',bold)
+        #
+        row_index = 3 ; col_index = 1
         #
         indeces = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P']
         #
