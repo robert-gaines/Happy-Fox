@@ -165,6 +165,18 @@ def BubbleSort(tickets):
                                 #
         return tickets
 
+def FindTimeResolved(ticket):
+    #
+    length = len(ticket)-1 ; i = 0
+    #
+    while(i < length):
+        #
+        i += 1
+        #
+    time_resolved = ticket[i]['timestamp']
+    #
+    return time_resolved
+
 def SortTickets(month,tickets):
         #
         sorted_list = [] ; temp_list = []
@@ -254,7 +266,7 @@ def GatherTickets():
                         #
                         corrective_action = custom_field_three['value']
                         asignee = intake['assigned_to']['name']
-                        date_resolved = intake['last_updated_at'][0:10]
+                        date_resolved = FindTimeResolved(intake['updates']) # intake['last_updated_at'][0:10]
                         #
                         try:
                                 #
