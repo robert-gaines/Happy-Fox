@@ -2,7 +2,6 @@
 
 __auth__ = 'RWG'
 
-from operator import itemgetter
 import xlsxwriter
 import datetime
 import requests
@@ -57,6 +56,50 @@ def WriteToSpreadsheet(tickets):
                 #
         monthly_report.close()
 
+def IdentifyDevice(unit_value):
+        #
+        sites = {}
+        #
+        sites.update({"15 ASOS":1})
+        sites.update({"17 STS":1})
+        sites.update({"Quantadyn":2})
+        sites.update({"14 ASOS":3})
+        sites.update({"7 ASOS":4})
+        sites.update({"20 ASOS":5})
+        sites.update({"10 ASOS":6})
+        sites.update({"19 ASOS":7})
+        sites.update({"3 ASOS, Det 1":8})
+        sites.update({"25 ASOS":9})
+        sites.update({"15 ASOS":10})
+        sites.update({"WPC":11})
+        sites.update({"2 ASOS":12})
+        sites.update({"12 CTS":13})
+        sites.update({"20 ASOS, Det 1":14})
+        sites.update({"6 CTS":15})
+        sites.update({"6 CTS":16})
+        sites.update({"6 CTS":17})
+        sites.update({"5 ASOS":18})
+        sites.update({"23 STS":19})
+        sites.update({"STTS":20})
+        sites.update({"13 ASOS":21})
+        sites.update({"9 ASOS":22})
+        sites.update({"705th DMOC":23})
+        sites.update({"11 ASOS":24})
+        sites.update({"22 STS":25})
+        sites.update({"607 ASOG":26})
+        sites.update({"24 STS":27})
+        sites.update({"26 STS":28})
+        sites.update({"321 STS":29})
+        sites.update({"3 ASOS":30})
+        #
+        if(unit_value in sites):
+                #
+                return int(sites.get(unit_value))
+                #
+        else:
+                #
+                return 0
+
 def SortMenu():
         #
         print('''
@@ -109,27 +152,26 @@ def SortTickets(month,tickets):
                         #
                         temp_list.append(t)
                         #
+                #
+                print(t)
+                #        
         for i in range(0,len(temp_list)-1):
                 #
-                if(type(temp_list[i][5]) is int):
+                try:
                         #
-                        try:
+                        if(int(temp_list[i][5]) > int(temp_list[i+1][5])):
                                 #
-                                if((temp_list[i][5]) > (temp_list[i+1][5])):
-                                        #
-                                        temp = temp_list[i]
-                                        #
-                                        temp_list[i] = temp_list[i+1]
-                                        #
-                                        temp_list[i+1] = temp
-                                        #
-                        except Exception as e:
+                                print(temp_list[i][5],":",temp_list[i+1][5])
                                 #
-                                print("[!] Error: %s " % e)
+                                temp = temp_list[i]
                                 #
-                else:
+                                temp_list[i] = temp_list[i+1]
+                                #
+                                temp_list[i+1] = temp
+                                #
+                except Exception as e:
                         #
-                        pass
+                        print("[!] Error: %s " % e)
                         #
         return temp_list
 
@@ -180,7 +222,7 @@ def GatherTickets():
                         discrepancy = intake['priority']['name']
                         submitter = intake['assigned_to']['name']
                         unit = intake['user']['custom_fields'][0]['value']
-                        device_id = custom_field_four['value']
+                        device_id = IdentifyDevice(unit) #custom_field_four['value']#
                         date_time_reported = intake['created_at']
                         date_time_acknowledged = intake['created_at']
                         notification = custom_field_zero['value']
@@ -189,6 +231,7 @@ def GatherTickets():
                         corrective_action = custom_field_three['value']
                         asignee = intake['assigned_to']['name']
                         date_resolved = intake['last_updated_at'][0:10]
+                        #
                         try:
                                 #
                                 root_cause = custom_field_two['name']+" "+custom_field_two['value']
@@ -289,6 +332,12 @@ def main():
         sorted_tickets = SortTickets(month_index,tickets)
         #
         WriteToSpreadsheet(sorted_tickets)
+        #
+        print()
+        #
+        print("[*] Finished, check directory for excel product")
+        #
+        time.sleep(3)
 
 if(__name__ == '__main__'):
         #
