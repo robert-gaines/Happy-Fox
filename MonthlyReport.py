@@ -191,11 +191,19 @@ def SortTickets(month,tickets):
                 #
                 ongoing = ["Open","New","Pending","Hold"]
                 #
-                date = t[6]
+                date = t[10]
                 #
-                month_index = int(date[5:7])
+                opened_date = t[6] 
                 #
-                if((month == month_index) or (t[1] in ongoing) or ((statuses[3] in t[1]) and month_index<month)):
+                year = datetime.datetime.now().year
+                #
+                opened_month_index = int(opened_date[5:7])
+                #
+                month_index = date[5:7]
+                #
+                year_index = date[0:4]
+                #
+                if((month == month_index and year == year_index) or (t[1] in ongoing) or ((statuses[1] in t[1]) and (opened_month_index<month and month_index == month))):
                         #
                         temp_list.append(t)
                         #
@@ -263,11 +271,18 @@ def GatherTickets():
                                 #
                         else:
                                 repeat_cat_one = "No"
-                        #
+                                #
                         corrective_action = custom_field_three['value']
                         asignee = intake['assigned_to']['name']
-                        date_resolved = FindTimeResolved(intake['updates']) # intake['last_updated_at'][0:10]
-                        #
+                                #
+                        if(status_value is "Solved"):
+                                #
+                                date_resolved = FindTimeResolved(intake['updates']) # intake['last_updated_at'][0:10]
+                                #
+                        else:
+                                #
+                                date_resolved = " "
+                                #
                         try:
                                 #
                                 root_cause = custom_field_two['name']+" "+custom_field_two['value']

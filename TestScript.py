@@ -12,9 +12,13 @@ def FindTimeResolved(ticket):
         #
         i += 1
         #
-    time_resolved = ticket[i]['timestamp']
+    time_resolved = ticket[i]['timestamp'][0:10]
     #
-    return time_resolved
+    month = time_resolved[6:7]
+    #
+    print(time_resolved)
+    #
+    print(month)
 #
 print("[~] Gathering parameters... ")
 #
@@ -36,6 +40,8 @@ response = requests.get(UniformResourceLocator,auth=authorization)
 response_string = str(response)
 #
 intake = response.json()
+#
+print(intake['updates'])
 #
 temp = []
 #
