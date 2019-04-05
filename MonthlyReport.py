@@ -101,6 +101,7 @@ def IdentifyDevice(unit_value):
         sites.update({"13 ASOS":21})
         sites.update({"9 ASOS":22})
         sites.update({"705th DMOC":23})
+        sites.update({"DMOC":23})
         sites.update({"11 ASOS":24})
         sites.update({"22 STS":25})
         sites.update({"607 ASOG":26})
@@ -181,9 +182,9 @@ def SortTickets(month,tickets):
         #
         sorted_list = [] ; temp_list = []
         #
-        time_value = datetime.datetime.now().year
+        month = str(month)
         #
-        current_year = str(time_value)
+        time_value = datetime.datetime.now().year
         #
         for t in tickets:
                 #
@@ -191,19 +192,19 @@ def SortTickets(month,tickets):
                 #
                 ongoing = ["Open","New","Pending","Hold"]
                 #
-                date = t[10]
+                date = t[13]
                 #
                 opened_date = t[6] 
                 #
                 year = datetime.datetime.now().year
                 #
-                opened_month_index = int(opened_date[5:7])
+                opened_month_index = opened_date[5:7]
                 #
-                month_index = date[5:7]
+                month_index = date[6:7]
                 #
                 year_index = date[0:4]
                 #
-                if((month == month_index and year == year_index and t[1] is statuses[1]) or (t[1] in ongoing) or ((statuses[1] in t[1]) and (opened_month_index<month and month_index == month))):
+                if((((month == month_index) and (year == year_index) and (t[1] == statuses[1]))) or (int(opened_month_index)<int(month) and (month_index == month)) or (t[1] in ongoing) and (t[1] is not statuses[1])):
                         #
                         temp_list.append(t)
                         #
@@ -270,12 +271,13 @@ def GatherTickets():
                                 repeat_cat_one = 'Yes'
                                 #
                         else:
+                                #
                                 repeat_cat_one = "No"
                                 #
                         corrective_action = custom_field_three['value']
                         asignee = intake['assigned_to']['name']
                                 #
-                        if(status_value is "Solved"):
+                        if(status_value == "Solved"):
                                 #
                                 date_resolved = FindTimeResolved(intake['updates']) # intake['last_updated_at'][0:10]
                                 #
