@@ -203,7 +203,7 @@ def SortTickets(month,tickets):
                 #
                 year_index = date[0:4]
                 #
-                if((month == month_index and year == year_index) or (t[1] in ongoing) or ((statuses[1] in t[1]) and (opened_month_index<month and month_index == month))):
+                if((month == month_index and year == year_index and t[1] is statuses[1]) or (t[1] in ongoing) or ((statuses[1] in t[1]) and (opened_month_index<month and month_index == month))):
                         #
                         temp_list.append(t)
                         #
