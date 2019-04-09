@@ -9,6 +9,40 @@ import json
 import time
 import sys
 
+def CountTickets(api_key,auth_token):
+    #
+    n = 0
+    #
+    api_key = api_key
+    #
+    auth_token = auth_token
+    #
+    response_code = "" ; ticket_count = 0 ; n = 0 ; o = 0
+    #
+    while(o <= 50):
+        #
+        UniformResourceLocator = "https://quantadyn.happyfox.com/api/1.1/json/ticket/"+str(n)+"/"
+        #
+        authorization = (api_key,auth_token)
+        #
+        response = requests.get(UniformResourceLocator,auth=authorization)
+        #
+        response_string = str(response)
+        #
+        response_code = str(response)
+        #
+        n += 1
+        #
+        if('2' in response_string):
+                #
+                ticket_count += 1
+                #
+        if('4' in response_string):
+            #
+            o += 1
+            #
+    return ticket_count
+
 def WriteToSpreadsheet(tickets):
         #
         monthly_report = xlsxwriter.Workbook('MonthlyReport.xlsx')
@@ -166,7 +200,7 @@ def BubbleSort(tickets):
                                 #
         return tickets
 
-def FindTimeResolved(ticket):
+def FindDateResolved(ticket):
     #
     length = len(ticket)-1 ; i = 0
     #
@@ -174,9 +208,11 @@ def FindTimeResolved(ticket):
         #
         i += 1
         #
-    time_resolved = ticket[i]['timestamp']
+    date_resolved = ticket[i]['timestamp']
     #
-    return time_resolved
+    date_resolved = date_resolved[0:10]
+    #
+    return date_resolved
 
 def SortTickets(month,tickets):
         #
@@ -218,17 +254,27 @@ def GatherTickets():
     #
     print("[~] Gathering parameters... ")
     #
-    time.sleep(1)
-    #
-    ticket_number = int(input("[+] Enter the total number of tickets-> ")); n = 0
-    #
     api_key = input("[+] Enter the API key-> ")
     #
     auth_token = input("[+] Enter the Authorization Token-> ")
     #
+    time.sleep(1)
+    #
+    print("[*] Counting Tickets...")
+    #
+    ticket_number = CountTickets(api_key,auth_token)
+    #
+    print("[*] Located-> %s tickets" % ticket_number)
+    #
     time.sleep(3)
     #
     print("[*] Set API Key: %s | Authorization Token: %s " % (api_key,auth_token))
+    #
+    time.sleep(3)
+    #
+    print("[*] Gathering tickets...")
+    #
+    n = 0
     #
     while(n <= ticket_number):
         #
@@ -283,7 +329,7 @@ def GatherTickets():
                                 #
                         if(status_value == "Solved"):
                                 #
-                                date_resolved = FindTimeResolved(intake['updates']) # intake['last_updated_at'][0:10]
+                                date_resolved = FindDateResolved(intake['updates']) # intake['last_updated_at'][0:10]
                                 #
                         else:
                                 #
