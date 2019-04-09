@@ -11,13 +11,11 @@ import sys
 
 def CountTickets(api_key,auth_token):
     #
-    n = 0
-    #
     api_key = api_key
     #
     auth_token = auth_token
     #
-    response_code = "" ; ticket_count = 0 ; n = 0 ; o = 0
+    ticket_count = 0 ; n = 0 ; o = 0
     #
     while(o <= 50):
         #
