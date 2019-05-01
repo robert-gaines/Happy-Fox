@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         self.line1 = QLineEdit(self)
 
         self.nameLabelTwo = QLabel(self)
-        self.nameLabelTwo.setText('Authorization Token:')
+        self.nameLabelTwo.setText('Token:')
         self.line2 = QLineEdit(self)
 
         self.nameLabelThree = QLabel(self)
@@ -44,15 +44,15 @@ class MainWindow(QMainWindow):
 
         self.line1.move(150,30)
         self.line1.resize(300,32)
-        self.nameLabelOne.move(50,30)
+        self.nameLabelOne.move(20,30)
 
         self.line2.move(150,90)
         self.line2.resize(300, 32)
-        self.nameLabelTwo.move(50,90)
+        self.nameLabelTwo.move(20,90)
 
         self.line3.move(150, 150)
         self.line3.resize(300, 30)
-        self.nameLabelThree.move(50,150)
+        self.nameLabelThree.move(20,150)
 
         self.pbar = QProgressBar(self)
         self.pbar.setGeometry(20, 300, 470, 30)
